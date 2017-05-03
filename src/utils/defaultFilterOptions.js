@@ -1,6 +1,7 @@
 import stripDiacritics from './stripDiacritics';
 
 function filterOptions (options, filterValue, excludeOptions, props) {
+	console.log('filter options! the default ');
 	if (props.ignoreAccents) {
 		filterValue = stripDiacritics(filterValue);
 	}

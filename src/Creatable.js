@@ -172,7 +172,6 @@ const Creatable = React.createClass({
 		if (onInputChange) {
 			onInputChange(input);
 		}
-
 		// This value may be needed in between Select mounts (when this.select is null)
 		this.inputValue = input;
 	},

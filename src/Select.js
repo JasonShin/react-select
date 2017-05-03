@@ -4,6 +4,7 @@
   http://jedwatson.github.io/react-select
 */
 
+import _ from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AutosizeInput from 'react-input-autosize';
@@ -120,6 +121,17 @@ const Select = React.createClass({
 	statics: { Async, AsyncCreatable, Creatable },
 
 	getDefaultProps () {
+		this.defaultFilterOptionDebounced = (...params) => {
+			// TODO: This is currently accepting an array fix it. no ...
+			console.log('does it work debounce? 1 ', params);
+			return _.debounce(() => {
+				console.log('does it work debounce?');
+				defaultFilterOptions(params);
+			}, 500);
+		};
+			/*_.debounce((...params) => {
+			defaultFilterOptions(params);
+		}, 500);*/
 		return {
 			addLabelText: 'Add "{label}"?',
 			arrowRenderer: defaultArrowRenderer,
@@ -134,7 +146,7 @@ const Select = React.createClass({
 			delimiter: ',',
 			disabled: false,
 			escapeClearsValue: true,
-			filterOptions: defaultFilterOptions,
+			filterOptions: this.defaultFilterOptionDebounced,
 			ignoreAccents: true,
 			ignoreCase: true,
 			inputProps: {},
@@ -937,12 +949,13 @@ const Select = React.createClass({
 	filterOptions (excludeOptions) {
 		var filterValue = this.state.inputValue;
 		var options = this.props.options || [];
+
 		if (this.props.filterOptions) {
 			// Maintain backwards compatibility with boolean attribute
 			const filterOptions = typeof this.props.filterOptions === 'function'
 				? this.props.filterOptions
 				: defaultFilterOptions;
-
+			console.log('filtering options yo1');
 			return filterOptions(
 				options,
 				filterValue,
@@ -958,6 +971,7 @@ const Select = React.createClass({
 				}
 			);
 		} else {
+			console.log('filtering options yo2');
 			return options;
 		}
 	},
